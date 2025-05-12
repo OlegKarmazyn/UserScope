@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Results{% endblock %}
+
+{% block body %}
+    <h1>Combination results</h1>
+    <ul>
+        {% for combination in combinations %}
+            <li>{{ combination|join(', ') }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
