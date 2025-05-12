@@ -29,10 +29,10 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/login, roles: [] }
         - { path: ^/users, roles: ROLE_USER_LIST }
         - { path: ^/users/.*/edit, roles: ROLE_USER_EDIT }
-        - { path: ^/combinations, roles: ROLE_ALGORITHM_VIEW }
+        - { path: ^/algorithm, roles: ROLE_ALGORITHM_VIEW }
 
 when@test:
     security:

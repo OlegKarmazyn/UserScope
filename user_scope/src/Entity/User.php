@@ -2,25 +2,26 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+#[ORM\Entity(repositoryClass: \App\Repository\UserRepository::class)]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'integer')]
+    private $id;
 
-    #[ORM\Column(length: 255)]
-    private ?string $username = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    private $username;
 
-    #[ORM\Column(length: 255)]
-    private ?string $password = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    private $password;
 
-    #[ORM\Column]
-    private array $roles = [];
+    #[ORM\Column(type: 'json')]
+    private $roles = [];
 
     public function getId(): ?int
     {
@@ -32,10 +33,9 @@ class User
         return $this->username;
     }
 
-    public function setUsername(string $username): static
+    public function setUsername(string $username): self
     {
         $this->username = $username;
-
         return $this;
     }
 
@@ -44,22 +44,38 @@ class User
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(string $password): self
     {
         $this->password = $password;
-
         return $this;
     }
 
     public function getRoles(): array
     {
-        return $this->roles;
+        $roles = $this->roles;
+        if (empty($roles)) {
+            $roles[] = 'ROLE_USER';
+        }
+        return array_unique($roles);
     }
 
-    public function setRoles(array $roles): static
+    public function setRoles(array $roles): self
     {
         $this->roles = $roles;
-
         return $this;
+    }
+
+    public function getSalt(): ?string
+    {
+        return null; 
+    }
+
+    public function eraseCredentials(): void
+    {
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
     }
 }
