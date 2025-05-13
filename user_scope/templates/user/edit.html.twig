@@ -4,8 +4,11 @@
 
 {% block body %}
     <h1>Edit users data</h1>
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
+    
+{{ form_start(form) }}
+        {{ form_row(form.username) }}
+        {{ form_row(form.password, { 'label': 'Password (optional to edit)' }) }}
+        {{ form_row(form.roles) }}
         <button type="submit">Save</button>
     {{ form_end(form) }}
 {% endblock %}
