@@ -1,13 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit users data{% endblock %}
+{% block title %}Edit User{% endblock %}
+
+{% block page_styles %}
+    <link rel="stylesheet" href="{{ asset('css/user-edit.css') }}">
+{% endblock %}
 
 {% block body %}
-    <h1>Edit users data</h1>
-    
-{{ form_start(form) }}
+    <h1>Edit User</h1>
+
+    {{ form_start(form) }}
         {{ form_row(form.username) }}
-        {{ form_row(form.password, { 'label': 'Password (optional to edit)' }) }}
+        {{ form_row(form.password, { 'label': 'Password (leave empty to keep current)' }) }}
         {{ form_row(form.roles) }}
         <button type="submit">Save</button>
     {{ form_end(form) }}
