@@ -4,22 +4,24 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
-            <style>
-                nav { margin-bottom: 20px; }
-                nav a { margin-right: 10px; }
-            </style>
+            <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+            {% block page_styles %}{% endblock %}
         {% endblock %}
     </head>
     <body>
         <nav>
-        {% if app.user %}
-            <a href="{{ path('user_list') }}">List of Users</a>
-            <a href="{{ path('algorithm') }}">Results of algorithm</a>
-            <a href="{{ path('app_logout') }}">Logout</a>
-        {% endif %}
+            <a href="{{ path('user_list') }}">User List</a>
+            <a href="{{ path('algorithm') }}">Algorithm Results</a>
+            {% if app.user %}
+                <a href="{{ path('app_logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ path('app_login') }}">Login</a>
+            {% endif %}
         </nav>
 
-        {% block body %}{% endblock %}
+        <div class="container">
+            {% block body %}{% endblock %}
+        </div>
 
         {% block javascripts %}{% endblock %}
     </body>
