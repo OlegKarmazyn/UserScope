@@ -10,9 +10,9 @@
     </head>
     <body>
         <nav>
-            <a href="{{ path('user_list') }}">User List</a>
-            <a href="{{ path('algorithm') }}">Algorithm Results</a>
             {% if app.user %}
+                <a href="{{ path('user_list') }}">User List</a>
+                <a href="{{ path('algorithm') }}">Algorithm Results</a>
                 <a href="{{ path('app_logout') }}">Logout</a>
             {% else %}
                 <a href="{{ path('app_login') }}">Login</a>
