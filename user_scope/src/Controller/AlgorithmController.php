@@ -7,7 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AlgorithmController extends AbstractController
 {
-    #[Route('/algorithm', name: 'algorithm_view')]
+    #[Route('/algorithm', name: 'algorithm')]
     public function view(): Response
     {
         $input = [1 => [1, 2], 2 => [3, 4]];
