@@ -4,11 +4,13 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[Route('/users')]
 class UserController extends AbstractController
@@ -22,18 +24,23 @@ class UserController extends AbstractController
 
     #[Route('/{id}/edit', name: 'user_edit', methods: ['GET', 'POST'])]
     #[ParamConverter('user', class: 'App\Entity\User')]
-    public function edit(Request $request, User $user, UserRepository $userRepository): Response
+public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userRepository->save($user, true);
+            $newPassword = $form->get('password')->getData();
+            if (!empty($newPassword)) {
+                $hashedPassword = $passwordHasher->hashPassword($user, $newPassword);
+                $user->setPassword($hashedPassword);
+            }
+
+            $entityManager->flush();
             return $this->redirectToRoute('user_list');
         }
 
         return $this->render('user/edit.html.twig', [
-            'user' => $user,
             'form' => $form->createView(),
         ]);
     }
