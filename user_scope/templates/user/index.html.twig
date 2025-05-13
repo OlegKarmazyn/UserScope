@@ -1,15 +1,38 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}List of users{% endblock %}
+{% block title %}User List{% endblock %}
+
+{% block page_styles %}
+    <link rel="stylesheet" href="{{ asset('css/user-list.css') }}">
+{% endblock %}
 
 {% block body %}
-    <h1>List of users</h1>
-    <ul>
-        {% for user in users %}
-            <li>
-                {{ user.username }} - Roles: {{ user.roles|join(', ') }}
-                <a href="{{ path('user_edit', {'id': user.id}) }}">Edit</a>
-            </li>
-        {% endfor %}
-    </ul>
+    <h1>User List</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Roles</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.roles|join(', ') }}</td>
+                    <td>
+                        <a href="{{ path('user_edit', { id: user.id }) }}">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">No users found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
